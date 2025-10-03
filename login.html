@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TI Login</title>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: radial-gradient(circle, #0a0a12 40%, #000000 100%);
+      color: #e0e0e0;
+    }
+
+    .container {
+      position: relative;
+      width: 850px;
+      height: 550px;
+      background: linear-gradient(145deg, #151525, #0d0d1a);
+      border-radius: 30px;
+      box-shadow: 0 0 25px rgba(0, 191, 255, 0.1);
+      overflow: hidden;
+      margin: 20px;
+    }
+
+    .form-box {
+      position: absolute;
+      right: 0;
+      width: 50%;
+      height: 100%;
+      background: #0f0f1a;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      padding: 40px;
+      z-index: 1;
+      transition: 0.6s ease-in-out 1.2s, visibility 0s 1s;
+    }
+
+    .container.active .form-box {
+      right: 50%;
+    }
+
+    .form-box.register {
+      visibility: hidden;
+    }
+
+    .container.active .form-box.register {
+      visibility: visible;
+    }
+
+    form {
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 36px;
+      color: #00bfff;
+      margin-bottom: 20px;
+    }
+
+    .input-box {
+      position: relative;
+      margin: 20px 0;
+    }
+
+    .input-box input,
+    .input-box select {
+      width: 100%;
+      padding: 13px 20px;
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: #00bfff;
+      font-size: 16px;
+    }
+
+    .input-box input::placeholder {
+      color: #aaa;
+    }
+
+    .input-box i {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #00bfff;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #7df9ff;
+      font-weight: 500;
+      text-align: left;
+    }
+
+    .forgot-link a {
+      font-size: 14px;
+      color: #00bfff;
+      text-decoration: none;
+    }
+
+    .forgot-link a:hover {
+      text-decoration: underline;
+    }
+
+    .btn {
+      width: 100%;
+      height: 48px;
+      background: linear-gradient(45deg, #0088cc, #00bfff);
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      color: #fff;
+      font-weight: 600;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 0 20px rgba(0, 191, 255, 0.3);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(0, 191, 255, 0.5);
+    }
+
+    .toggle-box {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .toggle-box::before {
+      content: "";
+      position: absolute;
+      left: -250%;
+      width: 300%;
+      height: 100%;
+      background: linear-gradient(120deg, rgba(0, 191, 255, 0.05), rgba(0, 191, 255, 0.15));
+      border-radius: 150px;
+      z-index: 2;
+      transition: 1.8s ease-in-out;
+    }
+
+    .container.active .toggle-box::before {
+      left: 50%;
+    }
+
+    .toggle-panel {
+      position: absolute;
+      width: 50%;
+      height: 100%;
+      color: #7df9ff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+      transition: 0.6s ease-in-out;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    .toggle-panel.toggle-left {
+      left: 0;
+    }
+
+    .container.active .toggle-panel.toggle-left {
+      left: -50%;
+    }
+
+    .toggle-panel.toggle-right {
+      right: -50%;
+    }
+
+    .container.active .toggle-panel.toggle-right {
+      right: 0;
+    }
+
+    .toggle-panel h1 {
+      font-size: 28px;
+      color: #00bfff;
+    }
+
+    .toggle-panel p {
+      font-size: 15px;
+      margin: 15px 0;
+      color: #aaa;
+    }
+
+    .toggle-panel .btn {
+      width: 160px;
+      height: 46px;
+      background: transparent;
+      border: 2px solid #00bfff;
+      color: #00bfff;
+      box-shadow: none;
+    }
+
+    .toggle-panel .btn:hover {
+      background: #00bfff;
+      color: #000;
+    }
+
+    @media screen and (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .form-box {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+
+      .toggle-panel {
+        display: none;
+      }
+    }
+
+.remember-box {
+  text-align: center;
+  margin-top: 10px;
+  color: #7df9ff;
+}
+
+.remember-box label {
+  font-size: 14px;
+  text-shadow: 0 0 5px rgba(0, 191, 255, 0.2);
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="container" id="container">
+    <!-- Login Form -->
+    <div class="form-box login">
+      <form id="loginForm">
+        <h1>Login</h1>
+        <div class="input-box">
+          <input type="text" id="username" placeholder="Username" required />
+          <i class="bx bxs-user"></i>
+        </div>
+        <div class="input-box">
+          <input type="password" id="password" placeholder="Password" required />
+          <i class="bx bxs-lock-alt"></i>
+        </div>
+        <div class="input-box">
+          <label for="role">Login As</label>
+          <select id="role" required>
+            <option value="patient">Patient</option>
+            <option value="doctor">Doctor</option>
+          </select>
+        </div>
+        <div class="remember-box">
+        <label><input type="checkbox" id="remember"> Remember login</label>
+        </div>
+
+        <div class="forgot-link">
+          <a href="#">Forgot password?</a>
+        </div>
+        <button type="submit" class="btn">Login</button>
+      </form>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="form-box register">
+      <form>
+        <h1>Register</h1>
+        <div class="input-box">
+          <input type="text" placeholder="Username" required />
+          <i class="bx bxs-user"></i>
+        </div>
+        <div class="input-box">
+          <input type="email" placeholder="Email" required />
+          <i class="bx bxs-envelope"></i>
+        </div>
+        <div class="input-box">
+          <input type="password" placeholder="Password" required />
+          <i class="bx bxs-lock-alt"></i>
+        </div>
+        <div class="input-box">
+          <label for="register-role">Role</label>
+          <select id="register-role" required>
+            <option value="patient">Patient</option>
+            <option value="doctor">Doctor</option>
+          </select>
+        </div>
+        <button type="submit" class="btn">Register</button>
+      </form>
+    </div>
+
+    <!-- Toggle Panels -->
+    <div class="toggle-box">
+      <div class="toggle-panel toggle-left">
+        <h1>Hello, Welcome!</h1>
+        <p>Don't have an account?</p>
+        <button class="btn register-btn">Register</button>
+      </div>
+      <div class="toggle-panel toggle-right">
+        <h1>Welcome Back!</h1>
+        <p>Already have an account?</p>
+        <button class="btn login-btn">Login</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const container = document.getElementById("container");
+    const registerBtn = document.querySelector(".register-btn");
+    const loginBtn = document.querySelector(".login-btn");
+
+    registerBtn.addEventListener("click", () => container.classList.add("active"));
+    loginBtn.addEventListener("click", () => container.classList.remove("active"));
+
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim().toLowerCase();
+      const password = document.getElementById("password").value;
+      const role = document.getElementById("role").value;
+
+      if (role === "doctor" && username === "doctor" && password === "1234") {
+        window.location.href = "TI_doctor.html";
+      } else if (role === "patient" && username === "invincible" && password === "1234") {
+        window.location.href = "TI_patient.html";
+      } else {
+        alert("Invalid credentials or role. Please try again.");
+      }
+    });
+  </script>
+</body>
+</html>
