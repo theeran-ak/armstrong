@@ -61,7 +61,7 @@
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
   import { getDatabase, ref, set, onValue, push } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-database.js";
-
+import { get } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-database.js";
   // ✅ Your Firebase configuration (copy this from Firebase Console → Project Settings → General → Web App)
     const firebaseConfig = {
     apiKey: "AIzaSyCdTogMAqnWxQ7cpvToI5QpeRwpn5A6HCQ",
@@ -88,18 +88,33 @@
   }
 
   function readData() {
-    const dbRef = ref(db, 'users');
+    const dbRef = ref(db, 'smartband/device_001/latest');
     onValue(dbRef, (snapshot) => {
       const data = snapshot.val();
+      console.log(data);
+      console.log(Object.keys(data).length);
       document.getElementById("output").innerText = JSON.stringify(data, null, 2);
     });
   }
-
+  function autoReadData() {
+  setInterval(async () => {
+    const dbRef = ref(db, 'smartband/device_001/latest');
+    const snapshot = await get(dbRef);
+    if (snapshot.exists()) {
+      document.getElementById("output").innerText = JSON.stringify(snapshot.val(), null, 2);
+    }
+  }, 5000);
+}
   window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("writeBtn").addEventListener("click", writeData);
-    document.getElementById("readBtn").addEventListener("click", readData);
+   // document.getElementById("readBtn").addEventListener("click", readData);
+   readData();
   });
 </script>
+
+
+
+
 
 </head>
 <body>

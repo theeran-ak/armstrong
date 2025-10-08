@@ -829,17 +829,68 @@ TI_patient.html
 
 <!-- Font Awesome for Bot Icon -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<!--
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue, push } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-database.js";
+import { get } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-database.js";
+  // ✅ Your Firebase configuration (copy this from Firebase Console → Project Settings → General → Web App)
+    const firebaseConfig = {
+    apiKey: "AIzaSyCdTogMAqnWxQ7cpvToI5QpeRwpn5A6HCQ",
+    authDomain: "armstrong-db9dc.firebaseapp.com",
+    databaseURL: "https://armstrong-db9dc-default-rtdb.firebaseio.com",
+    projectId: "armstrong-db9dc",
+    storageBucket: "armstrong-db9dc.firebasestorage.app",
+    messagingSenderId: "465166956237",
+    appId: "1:465166956237:web:9330b04998080077cf9b84",
+    measurementId: "G-LPV0S9D3PP"
+  };
+  // ✅ Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
 
 
+  function readData() {
+    const dbRef = ref(db, 'smartband/device_001/latest');
+    onValue(dbRef, (snapshot) => {
+      const data = snapshot.val();
+      console.log(data);
+      console.log(Object.keys(data).length);
+      document.getElementById("bp").innerText = data["blood_pressure"];
+    });
+  }
+  var gv=0;
 
+  function autoReadData() {
+  setInterval(async () => {
+    const dbRef = ref(db, 'smartband/device_001/latest');
+    const snapshot = await get(dbRef);
+    if (snapshot.exists()) {
+        const data=snapshot.val();
+      document.getElementById("bp").innerHTML=data["blood_pressure"];
+      document.getElementById("calory").innerHTML=data["calories"]+ " kcal";
+      document.getElementById("hr").innerHTML=data["heart_rate"] + " bpm";
+      document.getElementById("bp").innerHTML=data["blood_pressure"];
+      document.getElementById("bp").innerHTML=data["blood_pressure"];
+      document.getElementById("bp").innerHTML=data["blood_pressure"];
+      document.getElementById("bp").innerHTML=data["blood_pressure"];
+
+    }
+  }, 5000);
+}
+  window.addEventListener("DOMContentLoaded", () => {
+   autoReadData();
+  });
+</script>
+-->
 </head>
 <body>
     <header>
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <div class="logo-icon"><span>T</span></div>
-                    <h1>TI-BAND</h1>
+                    <div style="background-color:black;" class="logo-icon"><img style="height:100px;width:100px;object-fit:contain;" src="./solvitaelogo.png"></div>
+                    <h1>Solvitae</h1>
                 </div>
                 <button class="mobile-toggle">☰</button>
                 <nav>
@@ -903,7 +954,7 @@ TI_patient.html
             </div>
         </div>
     </section>
-
+<!--
     <section id="dashboard" class="dashboard">
         <div class="container">
             <h2>Interactive Health Dashboard</h2>
@@ -918,7 +969,7 @@ TI_patient.html
                             <div class="metric-icon">🌡</div>
                             <h3>Body Temperature</h3>
                         </div>
-                        <div class="metric-value">0°C</div>
+                        <div id="bt" class="metric-value">0°C</div>
                         <div class="metric-status status-normal">Normal</div>
                         <div class="metric-trend">
                             <span>Past 24h: Stable</span>
@@ -929,7 +980,7 @@ TI_patient.html
                             <div class="metric-icon">❤</div>
                             <h3>Heart Rate</h3>
                         </div>
-                        <div class="metric-value">0 bpm</div>
+                        <div id="hr" class="metric-value">0 bpm</div>
                         <div class="metric-status status-normal">Normal</div>
                         <div class="metric-trend">
                             <span>Past 24h: -3 bpm</span>
@@ -940,7 +991,7 @@ TI_patient.html
                             <div class="metric-icon">🩸</div>
                             <h3>Blood Pressure</h3>
                         </div>
-                        <div class="metric-value">0</div>
+                        <div id="bp" class="metric-value">0</div>
                         <div class="metric-status status-normal">Normal</div>
                         <div class="metric-trend">
                             <span>Past 24h: Stable</span>
@@ -952,7 +1003,7 @@ TI_patient.html
                             <div class="metric-icon">🫁</div>
                             <h3>Oxygen Saturation</h3>
                         </div>
-                        <div class="metric-value">0%</div>
+                        <div id="o2" class="metric-value">0%</div>
                         <div class="metric-status status-normal">Normal</div>
                         <div class="metric-trend">
                             <span>Past 24h: +1%</span>
@@ -963,7 +1014,7 @@ TI_patient.html
                             <div class="metric-icon">👟</div>
                             <h3>Steps</h3>
                         </div>
-                        <div class="metric-value">0</div>
+                        <div id="step" class="metric-value">0</div>
                         <div class="metric-status status-normal">keep walking</div>
                         <div class="metric-trend">
                             <span>Past 24h: Avg-30</span>
@@ -974,7 +1025,7 @@ TI_patient.html
                             <div class="metric-icon">🧪</div>
                             <h3>Blood Glucose</h3>
                         </div>
-                        <div class="metric-value">0</div>
+                        <div id="bg" class="metric-value">0</div>
                         <div class="metric-status status-normal">Normal</div>
                         <div class="metric-trend">
                             <span>Past 24h: -5 mg/dL</span>
@@ -985,7 +1036,7 @@ TI_patient.html
                             <div class="metric-icon">⚖</div>
                             <h3>CALORIES</h3>
                         </div>
-                        <div class="metric-value">0</div>
+                        <div id="calory" class="metric-value">0</div>
                         <div class="metric-status status-normal">Normal</div>
                         <div class="metric-trend">
                             <span>Past 30d: 0</span>
@@ -1009,7 +1060,7 @@ TI_patient.html
             </div>
         </div>
     </section>
-
+-->
     <section id="task" class="task">
         <div class="container">
             <h2> Health Achievements & Goals</h2>
@@ -1288,6 +1339,7 @@ TI_patient.html
 <!-- ... Your existing head and body content ... -->
 
 <!-- Add this script right before the closing body tag -->
+ 
 <script>
     // Define arrays of values for each vital sign
     const heartRateValues = [0];

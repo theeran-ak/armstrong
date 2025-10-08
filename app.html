@@ -320,12 +320,56 @@
     <label><input type="checkbox" name="kick" id="kickYes"> Yes</label>
     <label><input type="checkbox" name="kick" id="kickNo"> No</label>
   </div>
+   <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue, push } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-database.js";
+import { get } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-database.js";
+  // ✅ Your Firebase configuration (copy this from Firebase Console → Project Settings → General → Web App)
+    const firebaseConfig = {
+    apiKey: "AIzaSyCdTogMAqnWxQ7cpvToI5QpeRwpn5A6HCQ",
+    authDomain: "armstrong-db9dc.firebaseapp.com",
+    databaseURL: "https://armstrong-db9dc-default-rtdb.firebaseio.com",
+    projectId: "armstrong-db9dc",
+    storageBucket: "armstrong-db9dc.firebasestorage.app",
+    messagingSenderId: "465166956237",
+    appId: "1:465166956237:web:9330b04998080077cf9b84",
+    measurementId: "G-LPV0S9D3PP"
+  };
+  // ✅ Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  window.vitals={"Heart Rate":0,"SpO2":0,"Calories Burnt":0,"BP":0,"Sleep":0,"Steps":0};
+  window.readData=function() {
+    const dbRef = ref(db, 'smartband/device_001/latest');
+    onValue(dbRef, (snapshot) => {
+      const data = snapshot.val();
+      console.log(data);
+      console.log(Object.keys(data).length);
+      console.log(data["blood_pressure"]);
+      console.log(123);
+      vitals["Heart Rate"]=data["heart_rate"];
+      vitals["SpO2"] =data["spo2"];
+      vitals["Calories Burnt"]=data["calories"];
+      vitals["BP"]=data["blood_pressure"];
+      vitals["Sleep"]=data["sleep_hours"];
+      vitals["Steps"]=data["steps"];
+      vitals["Temperature"]=data["temperature"];
+      vitals["Stress_Level"]=data[stress];
+      vitals["Glucose"]=data["glucose"];
+      vitals["Fall_Detection"]=data["fall_detected"];
+      vitals["ECG"]=data["ecg_level"];
+    });
+  }
+ 
+ 
+</script>
 
   <script>
     // Generate realistic mock data
     function generateMockData() {
       return {
-        "Heart Rate": Math.floor(Math.random() * 20) + 70,
+        "Heart Rate": 1,
         "SpO2": Math.floor(Math.random() * 5) + 95,
         "Steps": Math.floor(Math.random() * 2000) + 3000,
         "Sleep": (Math.random() * 2 + 7).toFixed(1),
@@ -347,7 +391,7 @@
       
       if (vitals["Heart Rate"] >= 60 && vitals["Heart Rate"] <= 100) score++;
       if (vitals["SpO2"] >= 95) score++;
-      if (vitals["Systolic_BP"] <= 140 && vitals["Diastolic_BP"] <= 90) score++;
+      //if (vitals["Systolic_BP"] <= 140 && vitals["Diastolic_BP"] <= 90) score++;
       if (vitals["Temperature"] >= 97.0 && vitals["Temperature"] <= 99.5) score++;
       if (vitals["Glucose"] >= 70 && vitals["Glucose"] <= 140) score++;
       
@@ -402,9 +446,7 @@
 
     async function fetchAndUpdate() {
       try {
-        const response = await fetch("http://localhost:5000/api/health");
-        const vitals = await response.json();
-        
+        readData();
         document.getElementById("heartRate").innerText = vitals["Heart Rate"] + " bpm";
         document.getElementById("spo2").innerText = vitals["SpO2"] + "%";
         document.getElementById("steps").innerText = vitals["Steps"];
@@ -432,9 +474,9 @@
         // Update statuses based on values
         updateStatus("heartRate", vitals["Heart Rate"], {min: 60, max: 100, critical: 40});
         updateStatus("spo2", vitals["SpO2"], {min: 95, max: 100, critical: 88});
-        updateStatus("temperature", parseFloat(vitals["Temperature"]), {min: 97.0, max: 99.5, critical: 95});
+        updateStatus("temperature", parseFloat(vitals["Temperature"]), {min: 36.1, max: 37.5, critical: 35});
         updateStatus("glucose", vitals["Glucose"], {min: 70, max: 140, critical: 50});
-        
+        analyzeHealthData(vitals);
         // Update condition status
         document.getElementById("condition").innerText = "Updated";
         
